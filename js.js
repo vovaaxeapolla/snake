@@ -13,6 +13,9 @@
         score,
         gameOver,
         ID,
+        detectingTouch = false,
+        touch, touchstartX, touchstartY, touchendX, touchendY, dtTouch,
+        startedTouch = false,
         pause;
     
     function sizeCalc(){
@@ -34,6 +37,58 @@
     
     window.addEventListener('resize', () => {
         sizeCalc();
+    });
+    
+    window.addEventListener('touchstart', (event) => {
+       if (event.touches.length != 1 || startedTouch)return;
+        detectingTouch = true;
+        touch = event.changedTouches[0];
+        touchstartX = touch.pageX;
+        touchstartY = touch.pageY;
+        startedTouch = true;
+    });
+    
+    window.addEventListener('touchmove', (event) => {
+       if (!startedTouch && !detectingTouch)return;
+    });
+    
+    window.addEventListener('touchend', (event) => { 
+        if(!startedTouch)return;
+        
+        touch = event.changedTouches[0];
+        touchendX = touch.pageX;
+        touchendY = touch.pageY;
+        if(Math.abs(touchstartX - touchendX) >= Math.abs(touchstartY - touchendY)){
+        if(touchstartX - touchendX < 0){
+        if(dirX === 0 && !dirDone){
+        dirX = 1;
+        dirY = 0;
+        dirDone = true;
+        }
+        }else{
+        if(dirX === 0 && !dirDone){
+        dirX = -1;
+        dirY = 0;
+        dirDone = true;
+        }
+        }   
+        }else{
+        if(touchstartY - touchendY < 0){
+        if(dirY === 0 && !dirDone){
+        dirX = 0;
+        dirY = 1;
+        dirDone = true;
+        }
+        }else{
+        if(dirY === 0 && !dirDone){
+        dirX = 0;
+        dirY = -1;
+        dirDone = true;
+        }
+        }                 
+        }
+        startedTouch = false;
+        detectingTouch = false;
     });
     
     window.addEventListener('keydown', (event) => {
