@@ -6,9 +6,11 @@
 body{
     overflow: hidden;
     height: 100%;
+    position: relative;
 }
 
 html{
+    overflow: hidden;
     height: 100%;
 }
 
