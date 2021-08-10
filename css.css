@@ -5,11 +5,16 @@
 
 body{
     overflow: hidden;
+    height: 100%;
+}
+
+html{
+    height: 100%;
 }
 
 section{
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background: #550099;
     display: flex;
     justify-content: center;
