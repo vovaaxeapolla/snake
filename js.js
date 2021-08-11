@@ -7,13 +7,15 @@
         properties = {
             gameSpeed: 0.17,
             cellSize: 0,
-            cellW: 11,
-            cellH: 11,
+            cellW: 10,
+            cellH: 10,
             border: 5,
-            cellColor1: '#ddd',
-            cellColor2: '#222',
-            snakeColor: '#55ff55'
+            cellColor1: 'rgba(10,10,10,0.2)',
+            cellColor2: 'rgba(0,0,0,0.5)',
+            snakeColor: '#55ff55',
+            img: new Image()
         },
+        snakeImg = new Image(),
         snakeBody,
         dirX, dirY, dirDone,
         fruit = {
@@ -50,7 +52,6 @@
             canvas.height = w;
             canvas.width = w;
         } 
-        console.log(properties.cellSize);
     }
     
     window.addEventListener('resize', () => {
@@ -161,38 +162,33 @@
     
     
     function reDrawFruit(){
-        ctx.fillStyle = "#F00";
-        ctx.beginPath();
-         ctx.arc(fruit.x*properties.cellSize+properties.cellSize/2, fruit.y*properties.cellSize+properties.cellSize/2,properties.cellSize/2,0,Math.PI*2);
-         ctx.fill();
+        ctx.drawImage(fruit.img,0,0,128,128,fruit.x*properties.cellSize,fruit.y*properties.cellSize,properties.cellSize,properties.cellSize);
     }
     
     function reDrawSnake(){
         for(let i = 1; i < snakeBody.length; i++){
-            ctx.fillStyle = properties.snakeColor; 
-            ctx.beginPath();
-            ctx.arc(snakeBody[i].x*properties.cellSize+properties.cellSize/2, snakeBody[i].y*properties.cellSize+properties.cellSize/2,properties.cellSize/3,0,Math.PI*2);
-            ctx.fill();
+            ctx.drawImage(snakeImg,0,0,128,128,snakeBody[i].x*properties.cellSize,snakeBody[i].y*properties.cellSize,properties.cellSize,properties.cellSize)
         }   
         if(dirX === 0 && dirY === 0){
-            ctx.drawImage(snakeBody[0].img[0], 0, 0, 128, 128,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
+         ctx.drawImage(snakeBody[0].img[0], 0, 0, 128, 148,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
         }
         if(dirX === 1){
-            ctx.drawImage(snakeBody[0].img[1], 0, 0, 128, 128,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
+        ctx.drawImage(snakeBody[0].img[1], 0, 0, 148, 128,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
         }
         if(dirX === -1){
-            ctx.drawImage(snakeBody[0].img[3], 0, 0, 128, 128,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
+        ctx.drawImage(snakeBody[0].img[3], 0, 0, 148, 128,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
         }
         if(dirY === 1){
-            ctx.drawImage(snakeBody[0].img[2], 0, 0, 128, 128,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
+        ctx.drawImage(snakeBody[0].img[2], 0, 0, 128, 148,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
         }
         if(dirY === -1){
-            ctx.drawImage(snakeBody[0].img[0], 0, 0, 128, 128,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
+        ctx.drawImage(snakeBody[0].img[0], 0, 0, 128, 148,snakeBody[0].x*properties.cellSize,snakeBody[0].y*properties.cellSize,properties.cellSize,properties.cellSize);
         }
         
     }
     
     function reDrawBackground(){
+        ctx.drawImage(properties.img, 0, 0 , w, h);
         for(let i = 0; i < properties.cellH; i++)
             for(let j = 0; j < properties.cellW; j++){
                 ctx.fillStyle = (i+j) % 2 ===0 ?  properties.cellColor1 : properties.cellColor2;
@@ -291,6 +287,8 @@
     }
     
     function init(){
+        snakeImg.src = 'sprites/shield.png';
+        properties.img.src = 'sprites/background.jpg';
         menu.style.display = 'none';
         menuOpen = pause = dirDone = false;
         dirX = dirY = score = time = 0;
@@ -306,6 +304,7 @@
         snakeBody[0].img[3].src = 'sprites/head-left.png';
         x = snakeBody[0].x = Math.round(Math.random()*properties.cellW-1);
         y = snakeBody[0].y = Math.round(Math.random()*properties.cellH-1);
+        fruit.img.src = 'sprites/sheep.png';
         generateFruit();
         loop();
     }
